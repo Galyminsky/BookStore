@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "885328275245",
+    "project_id": "bookstore-e309e",
+    "storage_bucket": "bookstore-e309e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885328275245:android:a5a0b28465f1a0b2e795a4",
+        "android_client_info": {
+          "package_name": "me.proton.jobforandroid.bookstore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeWrvY6x6HCK-hZ5jOP--SlY08MNDMY0w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import me.proton.jobforandroid.bookstore.ui.theme.BookStoreTheme
 
 class MainActivity : ComponentActivity() {
@@ -11,9 +13,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BookStoreTheme {
-
-            }
+            val fb = Firebase.firestore
+            fb.collection("books")
+                .document().set(mapOf("name" to "Proton"))
         }
     }
 }
