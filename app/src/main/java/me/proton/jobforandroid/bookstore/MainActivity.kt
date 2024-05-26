@@ -25,9 +25,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import me.proton.jobforandroid.bookstore.data.Book
 import java.io.ByteArrayOutputStream
 
@@ -44,7 +47,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen() {
+    val context = LocalContext.current
     val fb = Firebase.firestore
+    val storage = Firebase.storage.reference.child("images")
+
+
     val list = remember {
         mutableStateOf(emptyList<Book>())
     }
@@ -84,16 +91,17 @@ fun MainScreen() {
                 .fillMaxWidth()
                 .padding(10.dp),
             onClick = {
-                fb.collection("books")
-                    .document().set(
-                        Book(
-                            "Van Helsing",
-                            "Wow cool book",
-                            "300",
-                            "fantastic",
-                            "url"
-                        )
-                    )
+
+                val task = storage.child("van.jpg").putBytes(
+                    bitmapToByteArray(context)
+                )
+                task.addOnSuccessListener { uploadTask ->
+                    uploadTask.metadata?.reference?.downloadUrl?.addOnCompleteListener { urlTask ->
+                        saveBook(fb, urlTask.result.toString())
+                    }
+
+                }
+
             }) {
             Text(
                 text = "Add Book"
@@ -106,6 +114,19 @@ fun MainScreen() {
 private fun bitmapToByteArray(context: Context): ByteArray {
     val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.van)
     val baos = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
     return baos.toByteArray()
+}
+
+private fun saveBook(fb: FirebaseFirestore, url: String) {
+    fb.collection("books")
+        .document().set(
+            Book(
+                "Van Helsing",
+                "Wow cool book",
+                "300",
+                "fantastic",
+                url
+            )
+        )
 }
