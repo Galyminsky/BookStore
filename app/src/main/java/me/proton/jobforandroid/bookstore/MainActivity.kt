@@ -46,7 +46,7 @@ fun MainScreen() {
     }
 
     val listener = fb.collection("books").addSnapshotListener { snapShot, exeption ->
-        list.value = snapShot?.toObjects(Book::class.java)?: emptyList()
+        list.value = snapShot?.toObjects(Book::class.java) ?: emptyList()
     }
     // listener.remove() - убрать обновление при переходе в другую активити или выходе из приложения
 
@@ -65,10 +65,12 @@ fun MainScreen() {
                         .fillMaxWidth()
                         .padding(10.dp)
                 ) {
-                    Text(text = book.name, modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth()
-                        .padding(15.dp))
+                    Text(
+                        text = book.name, modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth()
+                            .padding(15.dp)
+                    )
                 }
             }
         }
