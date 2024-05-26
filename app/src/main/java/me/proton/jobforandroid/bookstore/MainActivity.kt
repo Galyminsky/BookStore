@@ -45,13 +45,10 @@ fun MainScreen() {
         mutableStateOf(emptyList<Book>())
     }
 
-    fb.collection("books").get().addOnCompleteListener {  task ->
-        if (task.isSuccessful) {
-            list.value = task.result?.toObjects(Book::class.java)?: emptyList()
-        } else {
-            println("Error getting documents: ${task.exception}")
-        }
+    val listener = fb.collection("books").addSnapshotListener { snapShot, exeption ->
+        list.value = snapShot?.toObjects(Book::class.java)?: emptyList()
     }
+    // listener.remove() - убрать обновление при переходе в другую активити или выходе из приложения
 
     Column(
         modifier = Modifier.fillMaxSize(),
