@@ -1,5 +1,8 @@
 package me.proton.jobforandroid.bookstore
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import me.proton.jobforandroid.bookstore.data.Book
+import java.io.ByteArrayOutputStream
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,4 +101,11 @@ fun MainScreen() {
         }
         Spacer(modifier = Modifier.height(10.dp))
     }
+}
+
+private fun bitmapToByteArray(context: Context): ByteArray {
+    val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.van)
+    val baos = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+    return baos.toByteArray()
 }
